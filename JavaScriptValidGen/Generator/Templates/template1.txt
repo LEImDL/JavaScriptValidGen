@@ -1,0 +1,47 @@
+    for (let field of jsondata['document']) {
+        let key
+        let value
+
+        key = field['name']
+        value = field['value']
+
+        let index = mandatories.indexOf(key);
+        if (index >= 0) {
+            mandatories.splice(index, 1);
+        }
+        else {
+            index = optionals.indexOf(key);
+            if (index > -1) {
+                optionals.splice(index, 1);
+            }
+            else {
+                throw Error("Duplicated or unexpected field")
+            }
+        }
+
+        try {
+            function_dict[key](value)
+        }
+        catch (e) {
+            console.log(e.code + " -> " + e.message)
+            return false
+        }
+    }
+
+    return mandatories.length === 0
+}
+
+function main(example_path, schema_path) {
+    let example_doc = new Document({file: example_path})
+    let schema_doc = new Document({file: schema_path})
+
+    const v = new Verifier(schema_doc.content)
+    if (v.verify(example_doc.content) && validate_json_file(example_doc.content)) {
+        console.log("Ficheiro Válido")
+    }
+    else {
+        console.log("Ficheiro Inválido")
+    }
+}
+
+main("C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\mDL_example_document.json", "C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\schema_document.json")

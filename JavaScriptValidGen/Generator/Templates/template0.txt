@@ -1,0 +1,5 @@
+import {check_format_string, check_format_number, check_format_boolean, check_format_date} from "js_package/Validator/Validator.js";
+import Verifier from "js_package/Verifier/Verifier.js";
+import Document from "js_package/DataRepresentation/Document.js";
+
+function validate_json_file(jsondata) {
