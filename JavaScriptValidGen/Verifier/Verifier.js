@@ -20,7 +20,7 @@ class Verifier {
      */
     verify(specification) {
         try {
-            return v.validate(specification, this.schema).valid
+            return v.validate(this.schema, specification).valid
         }
         catch (e) {
             return false
@@ -32,8 +32,8 @@ class Verifier {
 import fs from "fs";
 
 const data = fs.readFileSync('C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\mDL_specification_prototype.json').toString()
-const vf = new Verifier(JSON.parse(data))
-console.log(vf.verify(JSON.parse(fs.readFileSync('C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\standard_format_prototype.json').toString())));
+const vf = new Verifier(JSON.parse(fs.readFileSync('C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\standard_format_prototype.json').toString()));
+console.log(vf.verify(JSON.parse(data)));
 */
 
 export default Verifier
