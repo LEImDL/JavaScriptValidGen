@@ -249,21 +249,21 @@ export function decode_enc(cose_obj, key, passphrase) {
 }
 
 /*
-let encoded1 = await sign({"Luis": "Tania"}, {'alg': 'ES256'}, {'kid': '11'}, "ecprikey.pem", "Andre")
+let encoded1 = await sign({"1": "2"}, {'alg': 'ES256'}, {'kid': '11'}, "ecprikey.pem", "Andre")
 console.log(encoded1)
 let decoded2 = await decode_sign(encoded1, "ecpubkey.pem", "Andre")
 console.log(decoded2)
 */
 
 /*
-let encoded3 = await mac({"Tania": "Luis"},{'alg': 'SHA-256_64'}, {'kid': 'our-secret'},'231f4c4d4d3051fdc2ec0a3851d5b383')
+let encoded3 = await mac({"3": "4"},{'alg': 'SHA-256_64'}, {'kid': 'our-secret'},'231f4c4d4d3051fdc2ec0a3851d5b383')
 // console.log("Teste: " + encoded3)
 let decoded4 = await decode_mac(encoded3, '231f4c4d4d3051fdc2ec0a3851d5b383')
 console.log(decoded4)
 */
 
 /*
-let encoded5 = await enc("{\"Pedro\": \"FM\"}",{'alg': 'A128GCM'}, {'kid': '11'},'231f4c4d4d3051fdc2ec0a3851d5b383')
+let encoded5 = await enc("{\"5\": \"6\"}",{'alg': 'A128GCM'}, {'kid': '11'},'231f4c4d4d3051fdc2ec0a3851d5b383')
 // console.log(encoded5)
 let decoded6 = await decode_enc(encoded5, '231f4c4d4d3051fdc2ec0a3851d5b383')
 console.log(decoded6)
