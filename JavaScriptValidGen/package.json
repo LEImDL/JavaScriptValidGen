@@ -1,6 +1,6 @@
 {
   "name": "javascript_valid_gen",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "description": "LEI",
   "main": "index.js",
   "type": "module",
