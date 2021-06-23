@@ -28,7 +28,7 @@ function printArrayWithCommas(values) {
 /**
  * A class used to load a `specification` and create a Python file for validating documents.
  */
-class Generator {
+export class Generator {
     /**
      * Constructor that saves information about a `specification` (ie. document format), `dict` object, as well as the target's filepath.
      * @param {dict} specification - The format to be defined/followed
