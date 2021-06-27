@@ -75,7 +75,7 @@ export class Document {
      * @return {bytes|dict} - Representation of CBOR/COSE object
      * @exception Error - If an invalid combination of headers has been found or key type
      */
-    sign(phdr, uhdr, key, passphrase) {
+    async sign(phdr, uhdr, key, passphrase) {
         return sign(this.content, phdr, uhdr, key, passphrase)
     }
 
@@ -88,21 +88,21 @@ export class Document {
      * @return {bytes|dict} - Representation of CBOR/COSE object
      * @exception Error - If an invalid combination of headers has been found or key type
      */
-    mac(phdr, uhdr, key, passphrase) {
+    async mac(phdr, uhdr, key, passphrase) {
         return mac(this.content, phdr, uhdr, key, passphrase)
     }
 
     /**
      * Encrypts a `json object` and return an equivalent `cose object`.
-     * @param {dict} phdr - Protected headers, dict with pairs of key, values of either plaintext or cose.headers object (and cose.algorithms, p.e.)
+     * @param {dic} phdr - Protected headers, dict with pairs of key, values of either plaintext or cose.headers object (and cose.algorithms, p.e.)
      * @param {dict} uhdr - Unprotected headers, dict with pairs of key, values of either plaintext or cose.headers object (and cose.algorithms, p.e.)
      * @param {bytes} key - Keys used to sign object
      * @param {string} passphrase - Passphrase used to encrypt key
      * @return {bytes|dict} - Representation of CBOR/COSE object
      * @exception Error - If an invalid combination of headers has been found or key type
      */
-    enc(phdr, uhdr, key, passphrase) {
-        return enc(this.content, phdr, uhdr, key, passphrase)
+    async enc(phdr, uhdr, key, passphrase) {
+        return enc(this.content, phdr, uhdr, key, passphrase);
     }
 
     /**
@@ -126,11 +126,11 @@ export class Document {
      * @param {string} passphrase - Passphrase used to encrypt key
      * @return {Document} - containing the payload in `cose_obj`
      */
-    static decoded_sign(cose_obj, key, passphrase) {
-        content = decode_sign(cose_obj, key, passphrase)
+    static async decoded_sign(cose_obj, key, passphrase) {
+        const content = decode_sign(cose_obj, key, passphrase)
 
         const options = {
-            'content': content
+            content: content
         }
 
         return new Document(options)
@@ -143,11 +143,11 @@ export class Document {
      * @param {string} passphrase - Passphrase used to encrypt key
      * @return {Document} - containing the payload in `cose_obj`
      */
-    static decoded_mac(cose_obj, key, passphrase) {
-        content = decode_mac(cose_obj, key, passphrase)
+    static async decoded_mac(cose_obj, key, passphrase) {
+        const content = decode_mac(cose_obj, key, passphrase)
 
         const options = {
-            'content': content
+            content: content
         }
 
         return new Document(options)
@@ -160,8 +160,12 @@ export class Document {
      * @param {string} passphrase - Passphrase used to encrypt key
      * @return {Document} - containing the payload in `cose_obj`
      */
-    static decoded_enc(cose_obj, key, passphrase) {
-        const options = decode_enc(cose_obj, key, passphrase)
+    static async decoded_enc(cose_obj, key, passphrase) {
+        const content = await decode_enc(cose_obj, key, passphrase)
+
+        const options = {
+            content: content
+        }
 
         return new Document(options)
     }
@@ -170,9 +174,30 @@ export class Document {
 export default Document;
 
 /*
+function isEqualsJson(obj1,obj2){
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    //return true when the two json has same length and all the properties has same value key by key
+    return keys1.length === keys2.length && Object.keys(obj1).every(key=> {
+        if (typeof obj1[key] === "object") {
+            return isEqualsJson(obj1[key], obj2[key])
+        }
+        else {
+            return obj1[key] === obj2[key]
+        }
+    });
+}
+
+
 const d = new Document({content: {"ola": "dois"}})
-const d = new Document({file: "C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\Test_Files\\test.xml", extension: "XML"})
-const d1 = new Document({file: "C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\mDL_example_document.json", extension: "JSON"})
-console.log(d1.to_cbor())
-console.log(d1.content)
+
+const d = new Document({file: "..\\..\\Test_Files\\test.xml", extension: "XML"})
+console.log(d.to_cbor())
+
+const d1 = new Document({file: "..\\..\\JSON_Files\\mDL_example_document.json", extension: "JSON"})
+
+const enc_content = await d1.enc({'alg': 'A128GCM'}, {'kid': '11'},'231f4c4d4d3051fdc2ec0a3851d5b383', '')
+const dec = await Document.decoded_enc(enc_content, '231f4c4d4d3051fdc2ec0a3851d5b383', '')
+console.log(isEqualsJson(dec.content, d1.content))
 */

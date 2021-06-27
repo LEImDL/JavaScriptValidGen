@@ -111,7 +111,7 @@ function load_key(key_or_path, yourPassphrase) {
  * @return {bytes|dict} - Representation of CBOR/COSE object
  * @exception Error - If an invalid combination of headers has been found or key type
  */
-export function sign(payload, phdr, uhdr, key, passphrase) {
+export async function sign(payload, phdr, uhdr, key, passphrase) {
 	const headers = {
 	  'p': phdr,
 	  'u': uhdr
@@ -140,7 +140,7 @@ export function sign(payload, phdr, uhdr, key, passphrase) {
  * @return {bytes|dict} - Representation of CBOR/COSE object
  * @exception Error - If an invalid combination of headers has been found or wrong key type
  */
-export function mac(payload, phdr, uhdr, key, passphrase) {
+export async function mac(payload, phdr, uhdr, key, passphrase) {
 	const headers = {
 	  'p': phdr,
 	  'u': uhdr
@@ -169,7 +169,7 @@ export function mac(payload, phdr, uhdr, key, passphrase) {
  * @return {bytes|dict} - Representation of CBOR/COSE object
  * @exception Error - If an invalid combination of headers has been found or wrong key type
  */
-export function enc(payload, phdr, uhdr, key, passphrase) {
+export async function enc(payload, phdr, uhdr, key, passphrase) {
 	const headers = {
 	  'p': phdr,
 	  'u': uhdr
@@ -177,9 +177,14 @@ export function enc(payload, phdr, uhdr, key, passphrase) {
 
 	const recipent = {'key': load_key(key, passphrase)}
 
+	let pretend_payload = payload
+	if (typeof payload !== "string") {
+		pretend_payload = JSON.stringify(payload)
+	}
+
 	return cose.encrypt.create(
 	  headers,
-	  payload,
+	  pretend_payload,
 	  recipent)
 	.then((buf) => {
 	  	return buf
@@ -195,7 +200,7 @@ export function enc(payload, phdr, uhdr, key, passphrase) {
  * @param {string} passphrase - Passphrase used to encrypt key
  * @return {string|dict} - Payload in `cose_obj`
 */
-export function decode_sign(cose_obj, key, passphrase) {
+export async function decode_sign(cose_obj, key, passphrase) {
 	const verifier = load_key(key, passphrase)
 
 	return cose.sign.verify(
@@ -215,7 +220,7 @@ export function decode_sign(cose_obj, key, passphrase) {
  * @param {string} passphrase - Passphrase used to encrypt key
  * @return {string|dict} - Payload in `cose_obj`
 */
-export function decode_mac(cose_obj, key, passphrase) {
+export async function decode_mac(cose_obj, key, passphrase) {
 	const cose_key = load_key(key, passphrase)
 
 	return cose.mac.read(
@@ -235,7 +240,7 @@ export function decode_mac(cose_obj, key, passphrase) {
  * @param {string} passphrase - Passphrase used to encrypt key
  * @return {string|dict} - Payload in `cose_obj`
 */
-export function decode_enc(cose_obj, key, passphrase) {
+export async function decode_enc(cose_obj, key, passphrase) {
 	const cose_key = load_key(key, passphrase)
 
 	return cose.encrypt.read(

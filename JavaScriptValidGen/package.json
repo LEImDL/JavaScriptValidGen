@@ -1,6 +1,6 @@
 {
   "name": "javascript_valid_gen",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "description": "LEI",
   "main": "index.js",
   "type": "module",
@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/LEImDL/JavaScriptValidGen"
   },
-  "authors": ["Ana Almeida", "André Figueiredo", "Luís Ferreira"],
+  "authors": [
+    "Ana Almeida",
+    "André Figueiredo",
+    "Luís Ferreira"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LEImDL/JavaScriptValidGen/issues"
@@ -27,11 +31,12 @@
   ],
   "dependencies": {
     "cbor": "^7.0.5",
-    "ec-key": "0.0.4",
-    "moment": "^2.29.1",
     "cose-js": "^0.6.0",
+    "ec-key": "0.0.4",
     "encoding": "^0.1.13",
+    "javascript_valid_gen": "^1.1.0",
     "jsonschema": "^1.4.0",
+    "moment": "^2.29.1",
     "node-forge": "^0.10.0",
     "xml2js": "^0.4.23"
   },

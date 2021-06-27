@@ -31,8 +31,8 @@ class Verifier {
 /*
 import fs from "fs";
 
-const data = fs.readFileSync('C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\mDL_specification_prototype.json').toString()
-const vf = new Verifier(JSON.parse(fs.readFileSync('C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\standard_format_prototype.json').toString()));
+const data = fs.readFileSync('..\\..\\JSON_Files\\mDL_specification_prototype.json').toString()
+const vf = new Verifier(JSON.parse(fs.readFileSync('..\\..\\JSON_Files\\standard_format_prototype.json').toString()));
 console.log(vf.verify(JSON.parse(data)));
 */
 

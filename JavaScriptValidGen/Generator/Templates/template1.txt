@@ -44,4 +44,4 @@ function main(example_path, schema_path) {
     }
 }
 
-main("C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\mDL_example_document.json", "C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\schema_document.json")
+// main("..\\..\\JSON_Files\\mDL_example_document.json", "..\\..\\JSON_Files\\schema_document.json")
