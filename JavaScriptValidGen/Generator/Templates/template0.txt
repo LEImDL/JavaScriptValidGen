@@ -1,5 +1,58 @@
-import {check_format_string, check_format_number, check_format_boolean, check_format_date} from "javascript_valid_gen/Validator/Validator.js";
+import {check_format_string, check_format_number, check_format_boolean, check_format_date, check_format_object} from "javascript_valid_gen/Validator/Validator.js";
 import Verifier from "javascript_valid_gen/Verifier/Verifier.js";
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
+
+function get_document(jsondata) {
+    let flag = false;
+    let key = null;
+
+    if (jsondata.length === 1) {
+        for (key of jsondata) {
+            flag = Array.isArray(jsondata[key]) && typeof jsondata[key][0] === "object"
+        }
+    }
+
+    let is_list
+    let doc
+    if (flag) {
+        doc = jsondata[key]
+        is_list = true
+    }
+    else {
+        doc = jsondata
+        is_list = false
+    }
+
+    let op_cont = null;
+    if (!is_list) {
+        op_cont = doc
+    }
+
+    return [doc, op_cont]
+}
+
+
+function get_field(field, op_cont) {
+    let key;
+    let value = {};
+
+    if (op_cont === null && field.length === 2) {
+        key = field['name']
+        value[key] = field['value']
+        key = [key]
+    }
+    else if (op_cont === null && field.length === 1) {
+        key = field.keys()[0]
+        value[key] = field['value']
+        key = [key]
+    }
+    else {
+        key = field
+        value[key] = op_cont[key]
+        key = [key]
+    }
+
+    return [key, value]
+}
 
 function validate_json_file(jsondata) {

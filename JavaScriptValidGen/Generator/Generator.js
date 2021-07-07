@@ -53,10 +53,15 @@ export class Generator {
         }
     }
 
-    process_all(field, type, function_name) {
+    process_all(field, type, function_name, i) {
         let args = field[type]
 
-        this.write(function_name + "(val, {")
+        if (i === undefined) {
+            this.write(function_name + "(val, {")
+        }
+        else{
+            this.write(function_name + "(val" + i + ", {")
+        }
 
         let first = true
         for(let pair of Object.entries(args)) {
@@ -78,6 +83,42 @@ export class Generator {
             }
         }
         this.write("}")
+    }
+
+    process_all_object(field, i) {
+        let value = field['my_object'];
+
+        const tmp = i === 0 ? '' : i - 1
+        this.write('check_format_object(val' + tmp + ", {")
+
+        for (let field of value) {
+            const name = field['name']
+
+            this.write("'" + name + "': (val"+i + " => ")
+
+            if ('my_object' in field) {
+                this.process_all_object(field, i + 1)
+            }
+            else if ('string' in field){
+                this.process_all(field, 'string', 'check_format_string', i)
+            }
+            else if ('number' in field){
+                this.process_all(field, 'number', 'check_format_number', i)
+            }
+            else if ('boolean' in field){
+                this.process_all(field, 'boolean', 'check_format_boolean', i)
+            }
+            else if ('date' in field){
+                this.process_all(field, 'date', 'check_format_date', i)
+            }
+            else {
+                throw Error("Unexcepted type")
+            }
+
+            this.write(")), ")
+        }
+        this.write("}")
+
     }
 
     get_mandatory() {
@@ -112,13 +153,12 @@ export class Generator {
         if (fs.existsSync(this.target)) {
             throw Error("File " + this.target + " already exists")
         }
+
+        if (!fs.existsSync(path.join(__dirname, "Templates", "template0.txt"))) {
+            throw Error("Template is missing")
+        }
         else {
-            if (!fs.existsSync(path.join(__dirname, "Templates", "template0.txt"))) {
-                throw Error("Template is missing")
-            }
-            else {
-                fs.copyFileSync(path.join(__dirname, "Templates", "template0.txt"), this.target)
-            }
+            fs.copyFileSync(path.join(__dirname, "Templates", "template0.txt"), this.target)
         }
     }
 
@@ -140,7 +180,10 @@ export class Generator {
 
             this.write("'" + name + "': val => ")
 
-            if ('string' in field){
+            if ('my_object' in field) {
+                this.process_all_object(field, 0)
+            }
+            else if ('string' in field){
                 this.process_all(field, 'string', 'check_format_string')
             }
             else if ('number' in field){
@@ -184,10 +227,10 @@ export class Generator {
     }
 }
 
-/*
+
 import Document from "../DataRepresentation/Document.js";
-const json = new Document({file:'..\\..\\JSON_Files\\mDL_specification_prototype.json'})
-let gen = new Generator(json.content, "Try.js")
+const json = new Document({file:'..\\..\\JSON_Files\\mDL_specification_prototype1.json'})
+let gen = new Generator(json.content, "Try1.js")
 
 gen.main()
-*/
+

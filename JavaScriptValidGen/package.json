@@ -1,6 +1,6 @@
 {
   "name": "javascript_valid_gen",
-  "version": "1.1.1",
+  "version": "1.5.0",
   "description": "LEI",
   "main": "index.js",
   "type": "module",
@@ -26,6 +26,7 @@
     "Exception/*",
     "Generator/*",
     "Generator/Templates/*",
+    "JSON_Files/*",
     "Validator/*",
     "Verifier/*"
   ],
@@ -34,7 +35,7 @@
     "cose-js": "^0.6.0",
     "ec-key": "0.0.4",
     "encoding": "^0.1.13",
-    "javascript_valid_gen": "^1.1.0",
+    "javascript_valid_gen": "^1.5.0",
     "jsonschema": "^1.4.0",
     "moment": "^2.29.1",
     "node-forge": "^0.10.0",

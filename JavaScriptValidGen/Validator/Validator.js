@@ -1,4 +1,4 @@
-import {Exception as e} from "../Exception/Exception.js"
+import {Exception} from "../Exception/Exception.js"
 import encoding from "encoding"
 import moment from 'moment'
 
@@ -31,7 +31,7 @@ const available_restrictions = new Set(['digits', 'letters', 'punctuation', 'whi
  */
 function check_for_restrictions(string, restrictions) {
     if (!isSubsetOf(available_restrictions, restrictions)) {
-        throw new e.Exception("Restrictions defined doesn't match with possible values", 100)
+        throw new Exception("Restrictions defined doesn't match with possible values", 100)
     }
 
     let pattern = new Set()
@@ -40,7 +40,7 @@ function check_for_restrictions(string, restrictions) {
     }
 
     if ((new Set([...string].filter(i => pattern.has(i)))).size !== 0) {
-        throw new e.Exception("Invalid Characters", 101)
+        throw new Exception("Invalid Characters", 101)
     }
 }
 
@@ -56,13 +56,13 @@ function check_for_restrictions(string, restrictions) {
  */
 function check_length(string, string_length, min_length, max_length) {
     if (string_length !== null && string.length !== string_length) {
-        throw new e.Exception("{0} doesn't have defined length: {1}", 200, string, string_length)
+        throw new Exception("{0} doesn't have defined length: {1}", 200, string, string_length)
     }
     if (max_length !== null && string.length > max_length) {
-        throw new e.Exception("{0} exceeds maximum length: {1}", 201, string, max_length)
+        throw new Exception("{0} exceeds maximum length: {1}", 201, string, max_length)
     }
     if (min_length !== null && string.length < min_length) {
-        throw new e.Exception("{0} doesn't meet minimum length: {1}", 202, string, min_length)
+        throw new Exception("{0} doesn't meet minimum length: {1}", 202, string, min_length)
     }
 }
 
@@ -101,7 +101,7 @@ export function check_format_string(string, options) {
     const restrictions = options.restrictions || null;
 
     if (!is_multiple_values && typeof string !== "string") {
-        throw new e.Exception("String {0} contains multiple values or isn't a string}", 300, string.valueOf())
+        throw new Exception("String {0} contains multiple values or isn't a string}", 300, string.valueOf())
     }
     if (typeof (string) === "string") {
         string = [string]
@@ -119,17 +119,17 @@ export function check_format_string(string, options) {
 
         if (is_binary) {
             if (typeof (s) !== "string" || !isBase64(s))
-                throw new e.Exception("String encoding doesn't match Base 64", 400)
+                throw new Exception("String encoding doesn't match Base 64", 400)
         } else {
             if (typeof (s) !== "string") {
-                throw new e.Exception("String isn't a str object", 401)
+                throw new Exception("String isn't a str object", 401)
             }
             if (encoding_ !== null && s !== encoding.convert(s, encoding_, encoding_).toString()) {
-                throw new e.Exception("String couldn't be encoded to {1}", 402, encoding_)
+                throw new Exception("String couldn't be encoded to {1}", 402, encoding_)
             }
 
             if (enums !== null && typeof (enums) === "object" && !(enums.indexOf(s))) {
-                throw new e.Exception("String {0} isn't defined in possible values: {1}", 500, s, enums)
+                throw new Exception("String {0} isn't defined in possible values: {1}", 500, s, enums)
             }
             if (restrictions !== null && typeof (restrictions) === "object") {
                 check_for_restrictions(s, new Set(restrictions))
@@ -139,7 +139,7 @@ export function check_format_string(string, options) {
                 const string_set = new Set(s);
                 const result = isSubsetOf(alphabet, string_set)
                 if (!result) {
-                    throw new e.Exception("Invalid Characters", 101)
+                    throw new Exception("Invalid Characters", 101)
                 }
             }
         }
@@ -169,15 +169,15 @@ function check_number(number, options) {
     // 3.0 é int, ver isso
     const int_format = /^[+-]?[0-9]+$/;
     if (is_int && !int_format.test(number.toString())) {
-        throw new e.Exception("{0} {1} isn't an Integer", 600, type_num, number)
+        throw new Exception("{0} {1} isn't an Integer", 600, type_num, number)
     }
 
     if (is_int && (typeof number !== "number" || !Number.isInteger(number))) {
-        throw new e.Exception("{0} {1} isn't an Integer", 600, type_num, number)
+        throw new Exception("{0} {1} isn't an Integer", 600, type_num, number)
     }
 
     if (typeof number !== "number") {
-        throw new e.Exception("{0} {1} isn't a Number", 601, type_num, number)
+        throw new Exception("{0} {1} isn't a Number", 601, type_num, number)
     }
 }
 
@@ -197,6 +197,12 @@ export function check_format_number(number, options) {
     const lower_bound = options.lower_bound || null;
     const upper_bound = options.upper_bound || null;
 
+    if (isNaN(number))
+        throw new Exception("{0} {1} isn't a Number", 601, "Main number", number)
+
+    number = parseInt(number)
+    console.log(number)
+
     check_number(number, {is_int: is_int, type_num: "Main Number"})
     check_number(number_length, {is_nullable:true, is_int:true, type_num:"Length"})
     check_number(lower_bound, {is_nullable:true, is_int:true, type_num:"Minimum Value"})
@@ -204,14 +210,14 @@ export function check_format_number(number, options) {
 
     if (number_length !== null && number >= Math.pow(10, number_length))
     {
-        throw new e.Exception("{0} exceeds length of {1}", 700, number, number_length)
+        throw new Exception("{0} exceeds length of {1}", 700, number, number_length)
     }
     if (lower_bound !== null && number < lower_bound)
     {
-        throw new e.Exception("{0} lower than the minimum value of {1}", 701, number, lower_bound)
+        throw new Exception("{0} lower than the minimum value of {1}", 701, number, lower_bound)
     }
     if (upper_bound !== null && number > upper_bound) {
-        throw new e.Exception("{0} exceeds maximum value of {1}", 701, number, upper_bound)
+        throw new Exception("{0} exceeds maximum value of {1}", 701, number, upper_bound)
     }
 }
 
@@ -222,7 +228,7 @@ export function check_format_number(number, options) {
  */
 export function check_format_boolean(value){
     if (typeof value !== "boolean"){
-        throw new e.Exception("{0} isn't a boolean value", 800, value)
+        throw new Exception("{0} isn't a boolean value", 800, value)
     }
 }
 
@@ -246,40 +252,40 @@ export function check_format_date(date, options) {
     const years_or_less = options.years_or_less || null;
 
     if (typeof date !== "string") {
-        throw new e.Exception("{0} isn't a string", 900, date)
+        throw new Exception("{0} isn't a string", 900, date)
     }
 
     let date_formatter;
     if (is_full_date) {
         date_formatter = 'YYYY-MM-DD HH:mm:ss';
     } else {
-        date_formatter = 'YY-MM-DD';
+        date_formatter = 'YYYY-MM-DD';
     }
 
     const date_formatted = moment(date, date_formatter, true);
 
     if (!date_formatted.isValid()) {
-        throw new e.Exception("{0} doesn't follow format {1}", 901, date, date_formatter)
+        throw new Exception("{0} doesn't follow format {1}", 901, date, date_formatter)
     }
 
     const now = new Date()
 
     if (past_date && (!dateInPast(date_formatted._d, now))) {
-        throw new e.Exception("{0} represents a future date and it was requested a past date", 902, date)
+        throw new Exception("{0} represents a future date and it was requested a past date", 902, date)
     }
 
     if (futute_date && (!dateInFuture(date_formatted._d, now))) {
-        throw new e.Exception("{0} represents a past date and it was requested a future date", 903, date)
+        throw new Exception("{0} represents a past date and it was requested a future date", 903, date)
     }
 
     const years_passed = moment(now).diff(date_formatted, 'years');
 
     if (years_or_more !== null && years_passed >= 0 && years_or_more > years_passed) {
-        throw new e.Exception("{0} was {1} years ago, and should be at least {2}", 904, date, years_passed, years_or_more)
+        throw new Exception("{0} was {1} years ago, and should be at least {2}", 904, date, years_passed, years_or_more)
     }
 
     if (years_or_less !== null && 0 <= years_or_less < years_passed) {
-        throw new e.Exception("{0} was {1} years ago, and should no more than least {2}", 905, date, years_passed, years_or_less)
+        throw new Exception("{0} was {1} years ago, and should no more than least {2}", 905, date, years_passed, years_or_less)
     }
 }
 
@@ -302,3 +308,24 @@ const dateInPast = function (firstDate, secondDate) {
 const dateInFuture = function (firstDate, secondDate) {
     return firstDate.setHours(0, 0, 0, 0) > secondDate.setHours(0, 0, 0, 0);
 };
+
+/**
+ * Verifies if `string` defines a date following a given format.
+ * @param {object} obj - String date to be verified
+ * @param {object} functions_dict - Object containing all possible restrictions
+ */
+export function check_format_object(obj, functions_dict) {
+    console.log(1, obj)
+
+    for (let obj1 of obj) {
+        console.log(2, obj1)
+         for (let item in obj1) {
+            console.log(3, item)
+            let func = functions_dict[item]
+
+            if (obj1[item] !== null && obj1[item] !== []) {
+                func(obj1[item])
+            }
+        }
+    }
+}
