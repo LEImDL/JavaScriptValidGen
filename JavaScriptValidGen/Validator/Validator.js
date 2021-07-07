@@ -201,7 +201,6 @@ export function check_format_number(number, options) {
         throw new Exception("{0} {1} isn't a Number", 601, "Main number", number)
 
     number = parseInt(number)
-    console.log(number)
 
     check_number(number, {is_int: is_int, type_num: "Main Number"})
     check_number(number_length, {is_nullable:true, is_int:true, type_num:"Length"})
@@ -315,12 +314,8 @@ const dateInFuture = function (firstDate, secondDate) {
  * @param {object} functions_dict - Object containing all possible restrictions
  */
 export function check_format_object(obj, functions_dict) {
-    console.log(1, obj)
-
     for (let obj1 of obj) {
-        console.log(2, obj1)
          for (let item in obj1) {
-            console.log(3, item)
             let func = functions_dict[item]
 
             if (obj1[item] !== null && obj1[item] !== []) {
