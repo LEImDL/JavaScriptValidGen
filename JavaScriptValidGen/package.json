@@ -35,7 +35,7 @@
     "cose-js": "^0.6.0",
     "ec-key": "0.0.4",
     "encoding": "^0.1.13",
-    "javascript_valid_gen": "^1.5.0",
+    "javascript_valid_gen": "^1.5.2",
     "jsonschema": "^1.4.0",
     "moment": "^2.29.1",
     "node-forge": "^0.10.0",
