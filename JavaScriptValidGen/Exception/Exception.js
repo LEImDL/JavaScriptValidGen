@@ -2,10 +2,11 @@
  * A class used to throw user-defined exceptions
  */
 export class Exception extends Error {
-
     /*
     :param code: Integer that identifies the type of the exception thrown
         Possible values:\n
+        000 -> Mandatory fields not filled\n
+        001 -> Fields not defined or not expected\n
         100 -> Unknown restrictions\n
         101 -> Characters not allowed\n
         102 -> Characters not defined in alphabet\n
@@ -72,3 +73,4 @@ if (!String.prototype.format)
     };
 }
 
+export default Exception;

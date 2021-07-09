@@ -91,8 +91,18 @@ export class Generator {
         const tmp = i === 0 ? '' : i - 1
         this.write('check_format_object(val' + tmp + ", {")
 
+        const mandatories = []
+        const optionals = []
+
         for (let field of value) {
             const name = field['name']
+
+            if (field['mandatory']) {
+                mandatories.push(name)
+            }
+            else {
+                optionals.push(name)
+            }
 
             this.write("'" + name + "': (val"+i + " => ")
 
@@ -117,8 +127,8 @@ export class Generator {
 
             this.write(")), ")
         }
-        this.write("}")
 
+        this.write("}, [" + printArrayWithCommas(mandatories) + "], [" + printArrayWithCommas(optionals) + "]")
     }
 
     get_mandatory() {

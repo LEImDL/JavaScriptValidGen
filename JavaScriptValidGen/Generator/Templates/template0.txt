@@ -1,6 +1,7 @@
 import {check_format_string, check_format_number, check_format_boolean, check_format_date, check_format_object} from "javascript_valid_gen/Validator/Validator.js";
 import Verifier from "javascript_valid_gen/Verifier/Verifier.js";
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
+import Exception from "javascript_valid_gen/Exception/Exception.js"
 
 function get_document(jsondata) {
     let flag = false;

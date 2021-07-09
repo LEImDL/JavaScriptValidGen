@@ -1,4 +1,4 @@
-import {Exception} from "../Exception/Exception.js"
+import Exception from "../Exception/Exception.js"
 import encoding from "encoding"
 import moment from 'moment'
 
@@ -309,18 +309,36 @@ const dateInFuture = function (firstDate, secondDate) {
 };
 
 /**
- * Verifies if `string` defines a date following a given format.
- * @param {object} obj - String date to be verified
- * @param {object} functions_dict - Object containing all possible restrictions
  */
-export function check_format_object(obj, functions_dict) {
+export function check_format_object(obj, functions_dict, mandatory, optional) {
     for (let obj1 of obj) {
-         for (let item in obj1) {
+        const mandatory_tmp = mandatory.slice()
+        const optional_tmp = optional.slice()
+
+        for (let item in obj1) {
+            let index = mandatory_tmp.indexOf(item);
+            if (index >= 0) {
+                mandatory_tmp.splice(index, 1);
+            }
+            else {
+                index = optional_tmp.indexOf(item);
+                if (index > -1) {
+                    optional_tmp.splice(index, 1);
+                }
+                else {
+                    throw new Exception("{0} is not defined for this document", 1, item)
+                }
+            }
+
             let func = functions_dict[item]
 
             if (obj1[item] !== null && obj1[item] !== []) {
                 func(obj1[item])
             }
+        }
+
+        if (mandatory_tmp.length !== 0) {
+            throw new Exception("{0} is missing from document", 0, mandatory_tmp)
         }
     }
 }

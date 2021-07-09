@@ -22,7 +22,7 @@
                     optionals.splice(index, 1);
                 }
                 else {
-                    throw Error("Duplicated or unexpected field")
+                    throw new Exception("{0} is not defined for this document", 1, key[0])
                 }
             }
 
@@ -38,15 +38,12 @@
                 continue
             }
 
-            try {
-                function_dict[field](value1)
-            }
-            catch (e) {
-                console.log(e.code + " -> " + e.message)
-                return false
-            }
+            function_dict[field](value1)
         }
         catch (e) {
+            if (e instanceof Exception) {
+                console.log(e.code + " -> " + e.message)
+            }
             return false
         }
     }
