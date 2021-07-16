@@ -11,10 +11,10 @@ import ECKey from 'ec-key';
  * @return {dict} - `Json` object represented in `dict` format
  */
 export function cbor2json(cbor_obj) {
-	cbor.decodeAllSync(cbor_obj,
+	return cbor.decodeAllSync(cbor_obj,
 		function(error, obj) {
 			return obj
-	});
+	})[0];
 }
 
 /**
@@ -23,7 +23,7 @@ export function cbor2json(cbor_obj) {
  * @return {bytes} - `Cbor` object represented in `bytes`
  */
 export function json2cbor(json_obj) {
-	return cbor.encode(json_obj); // returns <Buffer f5>
+	return cbor.encode(json_obj);
 }
 
 function load_number_as_hex(data) {
@@ -120,9 +120,9 @@ export async function sign(payload, phdr, uhdr, key, passphrase) {
 	const signer = load_key(key, passphrase)
 
 	return cose.sign.create(
-	  headers,
-	  payload,
-	  signer)
+	  	headers,
+	  	JSON.stringify(payload),
+	  	signer)
 	.then((buf) => {
 	  	return buf
 	}).catch((error) => {
@@ -149,9 +149,9 @@ export async function mac(payload, phdr, uhdr, key, passphrase) {
 	const recipent = {'key': load_key(key, passphrase)}
 
 	return cose.mac.create(
-	  headers,
-	  payload,
-	  recipent)
+	  	headers,
+		JSON.stringify(payload),
+	  	recipent)
 	.then((buf) => {
 	  	return buf
 	}).catch((error) => {
@@ -177,15 +177,10 @@ export async function enc(payload, phdr, uhdr, key, passphrase) {
 
 	const recipent = {'key': load_key(key, passphrase)}
 
-	let pretend_payload = payload
-	if (typeof payload !== "string") {
-		pretend_payload = JSON.stringify(payload)
-	}
-
 	return cose.encrypt.create(
-	  headers,
-	  pretend_payload,
-	  recipent)
+	  	headers,
+		JSON.stringify(payload),
+		recipent)
 	.then((buf) => {
 	  	return buf
 	}).catch((error) => {
@@ -207,7 +202,10 @@ export async function decode_sign(cose_obj, key, passphrase) {
 		cose_obj,
 		verifier
 	).then((payload) => {
-		return payload
+		if (isJson(payload))
+			return JSON.parse(payload.toString('utf8'))
+		else
+			return payload
 	}).catch((error) => {
 		console.log(error);
 	});
@@ -227,7 +225,10 @@ export async function decode_mac(cose_obj, key, passphrase) {
 		cose_obj,
 		cose_key
 	).then((payload) => {
-		return payload
+		if (isJson(payload))
+			return JSON.parse(payload.toString('utf8'))
+		else
+			return payload
 	}).catch((error) => {
 		console.log(error);
 	});
@@ -247,10 +248,22 @@ export async function decode_enc(cose_obj, key, passphrase) {
 		cose_obj,
 		cose_key
 	).then((payload) => {
-		return JSON.parse(payload.toString('utf8'))
+		if (isJson(payload))
+			return JSON.parse(payload.toString('utf8'))
+		else
+			return payload
 	}).catch((error) => {
 		console.log(error);
 	});
+}
+
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
 /*

@@ -58,7 +58,8 @@ export class Document {
                 this.content = s1;
             }
             else if (this.extension === "CBOR"){
-                this.content = cbor2json(fs.readFileSync(this.filename, {encoding:'utf8', flag:'rb'}))
+                const data = Buffer.from(fs.readFileSync(this.filename, {flag:'r'}), "utf-8");
+                this.content = cbor2json(data)
             }
             else {
                 throw Error("Formato não suportado")
@@ -127,7 +128,7 @@ export class Document {
      * @return {Document} - containing the payload in `cose_obj`
      */
     static async decoded_sign(cose_obj, key, passphrase) {
-        const content = decode_sign(cose_obj, key, passphrase)
+        const content = await decode_sign(cose_obj, key, passphrase)
 
         const options = {
             content: content
@@ -144,7 +145,7 @@ export class Document {
      * @return {Document} - containing the payload in `cose_obj`
      */
     static async decoded_mac(cose_obj, key, passphrase) {
-        const content = decode_mac(cose_obj, key, passphrase)
+        const content = await decode_mac(cose_obj, key, passphrase)
 
         const options = {
             content: content

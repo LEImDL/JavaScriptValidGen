@@ -237,10 +237,10 @@ export class Generator {
     }
 }
 
-
+/*
 import Document from "../DataRepresentation/Document.js";
 const json = new Document({file:'..\\JSON_Files\\mDL_specification_prototype1.json'})
 let gen = new Generator(json.content, "Try.js")
 
 gen.main()
-
+*/

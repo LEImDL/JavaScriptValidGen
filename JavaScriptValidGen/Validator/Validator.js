@@ -309,6 +309,13 @@ const dateInFuture = function (firstDate, secondDate) {
 };
 
 /**
+ * Recursive function, using functions_dict to validate obj, according to mandatory/optional status for each element.
+ * @param {Object} obj - Object to be validated
+ * @param {Object} functions_dict - Dict with a function for each value contained in `obj`
+ * @param {Array} mandatory - List of mandatory fields
+ * @param {Array} optional - List of optional fields
+ * @exception ExceptionValidation(0) - if one or more mandatory fields are missing
+ * @exception ExceptionValidation(0) - if field is not defined/expected for document
  */
 export function check_format_object(obj, functions_dict, mandatory, optional) {
     for (let obj1 of obj) {
