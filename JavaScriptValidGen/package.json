@@ -1,6 +1,6 @@
 {
   "name": "javascript_valid_gen",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "LEI",
   "main": "index.js",
   "type": "module",
@@ -41,6 +41,6 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "javascript_valid_gen": "^1.6.4"
+    "javascript_valid_gen": "^1.6.5"
   }
 }
