@@ -336,8 +336,8 @@ It is possible to use a different file extension, f.e., *XML*, but it has to fol
 import Verifier from "javascript_valid_gen/Verifier/Verifier.js";
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_specification_prototype1.json'
-const schema_path = 'JavaScriptValidGen/JSON_Files/standard_format_prototype.json'
+const specification_path = 'JSON_Files/mDL_specification_prototype1.json'
+const schema_path = 'JSON_Files/standard_format_prototype.json'
 
 const document = new Document({file: specification_path, extension: "JSON"})
 const specification = document.content
@@ -358,7 +358,7 @@ else
 ```javascript
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_specification_prototype1.json'
+const specification_path = 'JSON_Files/mDL_specification_prototype1.json'
 const document = new Document({file: specification_path, extension: "JSON"})
 const specification = document.content
 
@@ -415,7 +415,7 @@ All three operations (*encryption*, *mac* and *sign*) are supported, as well all
 ```javascript
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_example_document3.json'
+const specification_path = 'JSON_Files/mDL_example_document3.json'
 const document = new Document({file:specification_path, extension:"JSON"})
 
 const key = '231f4c4d4d3051fdc2ec0a3851d5b383'
@@ -430,7 +430,7 @@ console.log(dec.content)
 ```javascript
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_example_document3.json'
+const specification_path = 'JSON_Files/mDL_example_document3.json'
 const document = new Document({file:specification_path, extension:"JSON"})
 
 const key = '231f4c4d4d3051fdc2ec0a3851d5b383'
@@ -445,7 +445,7 @@ console.log(unmac.content)
 ```javascript
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_example_document3.json'
+const specification_path = 'JSON_Files/mDL_example_document3.json'
 const document = new Document({file:specification_path, extension:"JSON"})
 
 const signed = await document.sign({'alg': 'ES256'}, {'kid': '11'}, "Test_Files/private.pem", "Andre")
@@ -466,8 +466,8 @@ import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 import Verifier from "javascript_valid_gen/Verifier/Verifier.js";
 import {Generator} from "javascript_valid_gen/Generator/Generator.js";
 
-const specification_path = "JavaScriptValidGen/JSON_Files/mDL_specification_prototype1.json"
-const schema_path = "JavaScriptValidGen/JSON_Files/schema_document3.json"
+const specification_path = "JSON_Files/mDL_specification_prototype1.json"
+const schema_path = "JSON_Files/schema_document3.json"
 const target_path = "validator_example.js"
 
 let document = new Document({file:specification_path, extension:"JSON"})
@@ -484,8 +484,8 @@ if (verifier.verify(specification)) {
 
     let module = await import("./validator_example.js");
 
-    const example_doc_path = "JavaScriptValidGen/JSON_Files/mDL_example_document3.json"
-    const schema_doc_path = "JavaScriptValidGen/JSON_Files/schema_document3.json"
+    const example_doc_path = "JSON_Files/mDL_example_document3.json"
+    const schema_doc_path = "JSON_Files/schema_document3.json"
 
     document = new Document({file:example_doc_path, extension:"JSON"})
     const document_data = document.content
