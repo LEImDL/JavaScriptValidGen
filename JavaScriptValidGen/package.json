@@ -1,6 +1,6 @@
 {
   "name": "javascript_valid_gen",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "LEI",
   "main": "index.js",
   "type": "module",
@@ -31,16 +31,17 @@
     "Verifier/*"
   ],
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "ajv": "^8.6.2",
     "cbor": "^7.0.5",
     "cose-js": "^0.6.0",
     "ec-key": "0.0.4",
     "encoding": "^0.1.13",
-    "jsonschema": "^1.4.0",
     "moment": "^2.29.1",
     "node-forge": "^0.10.0",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "javascript_valid_gen": "^1.6.5"
+    "javascript_valid_gen": "^1.6.6"
   }
 }

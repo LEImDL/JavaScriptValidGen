@@ -1,6 +1,5 @@
-import Validator from "jsonschema"
-const v = new Validator.Validator();
-
+import Ajv from 'ajv';
+import $RefParser from "@apidevtools/json-schema-ref-parser";
 
 /**
  * A class used to verify documents.
@@ -15,12 +14,19 @@ class Verifier {
     }
 
     /**
+     * Dereferences a schema, should be used if contains "$ref" for external files
+     */
+    async dereference() {
+        this.schema = await $RefParser.bundle(this.schema);
+    }
+
+    /**
      * Verifies if `specification` object follows loaded schema.
      * @param {dict} specification - Dictionary representing the specification to be verified
      */
     verify(specification) {
         try {
-            return v.validate(this.schema, specification).valid
+            return new Ajv().validate(this.schema, specification)
         }
         catch (e) {
             return false

@@ -329,7 +329,7 @@ This file also contains all the accepted restrictions for each type.
 ## Execution example
 
 ### Verify schema - ***Verifier***
-* Verify if `mDL_specification_prototype1` file follows the accepted schema for files.\
+* Verify if `mDL_specification_prototype1` file follows the accepted schema for files. The `dereference` function is used because *mDL_specification_prototype1.json* contains references to external files.\
 It is possible to use a different file extension, f.e., *XML*, but it has to follow the same type of "scheme".
 
 ```javascript
@@ -344,6 +344,8 @@ const specification = document.content
 
 const schema = new Document({file: schema_path, extension: "JSON"})
 const verifier = new Verifier(schema.content)
+
+await verifier.dereference()
 
 if (verifier.verify(specification))
     console.log("Valid Format")

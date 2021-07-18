@@ -8,16 +8,16 @@
                "type":"string"
             },
             "string": {
-              "$ref":"file:C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\types_prototype.json#/definitions/string"
+              "$ref":"JSON_Files\\types_prototype.json#/definitions/string"
             },
             "number": {
-              "$ref":"file:C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\types_prototype.json#/definitions/number"
+              "$ref":"JSON_Files\\types_prototype.json#/definitions/number"
             },
             "boolean": {
-              "$ref":"file:C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\types_prototype.json#/definitions/boolean"
+              "$ref":"JSON_Files\\types_prototype.json#/definitions/boolean"
             },
             "date": {
-              "$ref":"file:C:\\Users\\a84807\\Desktop\\Uni\\4ANO\\LEI\\JSON_Files\\types_prototype.json#/definitions/date"
+              "$ref":"JSON_Files\\types_prototype.json#/definitions/date"
             },
             "my_object": {
                "type":"array",
