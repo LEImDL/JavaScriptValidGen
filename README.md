@@ -329,21 +329,23 @@ This file also contains all the accepted restrictions for each type.
 ## Execution example
 
 ### Verify schema - ***Verifier***
-* Verify if `mDL_specification_prototype1` file follows the accepted schema for files.\
+* Verify if `mDL_specification_prototype1` file follows the accepted schema for files. The `dereference` function is used because *mDL_specification_prototype1.json* contains references to external files.\
 It is possible to use a different file extension, f.e., *XML*, but it has to follow the same type of "scheme".
 
 ```javascript
 import Verifier from "javascript_valid_gen/Verifier/Verifier.js";
 import Document from "javascript_valid_gen/DataRepresentation/Document.js";
 
-const specification_path = 'JavaScriptValidGen/JSON_Files/mDL_specification_prototype1.json'
-const schema_path = 'JavaScriptValidGen/JSON_Files/standard_format_prototype.json'
+const specification_path = 'JSON_Files/mDL_specification_prototype1.json'
+const schema_path = 'JSON_Files/standard_format_prototype.json'
 
 const document = new Document({file: specification_path, extension: "JSON"})
 const specification = document.content
 
 const schema = new Document({file: schema_path, extension: "JSON"})
 const verifier = new Verifier(schema.content)
+
+await verifier.dereference()
 
 if (verifier.verify(specification))
     console.log("Valid Format")
